@@ -1,0 +1,20 @@
+# Titan ML 2.0 - Advanced Deep Learning Dependencies
+# Install with: pip install -r requirements-ml.txt
+
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Transformers & NLP
+transformers>=4.30.0
+sentence-transformers>=2.2.0
+
+# Graph Neural Networks (optional - for link prediction)
+# torch-geometric>=2.3.0  # Uncomment if using GNN
+
+# Reinforcement Learning
+gymnasium>=0.28.0
+
+# Utilities
+numpy>=1.24.0
+scikit-learn>=1.2.0

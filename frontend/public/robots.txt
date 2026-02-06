@@ -1,0 +1,22 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/settings/
+Disallow: /_next/
+Disallow: /auth/
+
+# Allow specific important pages
+Allow: /dashboard/keyword-research
+Allow: /dashboard/content-optimizer
+Allow: /dashboard/speed-analyzer
+Allow: /dashboard/viral-ai
+
+# Sitemap location
+Sitemap: https://seokit.com/sitemap.xml
+
+# Crawl-delay (optional, helps with server load)
+Crawl-delay: 1

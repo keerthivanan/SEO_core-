@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-black text-white antialiased selection:bg-white selection:text-black;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv11";
+  }
+}
+
+@layer utilities {
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-outfit {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  /* Titan/Holographic Effects restricted to specific accents */
+  .titan-gradient {
+    background: linear-gradient(135deg, #eee 0%, #fff 100%);
+  }
+}

@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # 1. CORE BRAIN (Python API)
+  titan-backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://seokit_user:seokit_password@postgres:5432/seokit_db
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+      - N8N_WEBHOOK_URL=http://n8n:5678/webhook/titan-trigger
+    depends_on:
+      - postgres
+      - redis
+      - qdrant
+    networks:
+      - titan-network
+
+  # 2. THE FACE (Next.js Dashboard)
+  titan-frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    networks:
+      - titan-network
+
+  # 3. KNOWLEDGE BASE (Vector DB)
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - titan-network
+
+  # 4. MEMORY STORAGE (Postgres)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=seokit_user
+      - POSTGRES_PASSWORD=seokit_password
+      - POSTGRES_DB=seokit_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - titan-network
+
+  # 5. CACHE & QUEUE (Redis)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - titan-network
+
+  # 6. AUTOMATION (Optional)
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=titan_god_mode
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - titan-network
+
+networks:
+  titan-network:
+    driver: bridge
+
+volumes:
+  qdrant_data:
+  postgres_data:
+  redis_data:
+  n8n_data:

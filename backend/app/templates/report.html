@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Report for {{ analysis.url }}</title>
+    <!-- Tailwind CSS (Injected or CDN for PDF rendering) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Outfit:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .titan-gradient {
+            background: linear-gradient(135deg, #000 0%, #111 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-white text-black">
+
+    <!-- Cover Page -->
+    <div class="h-screen flex flex-col justify-between p-20 titan-gradient text-white">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-white text-black flex items-center justify-center rounded text-xl font-bold">R
+            </div>
+            <div class="text-3xl font-black tracking-tighter">RankForge AI</div>
+        </div>
+
+        <div>
+            <div class="text-2xl font-light text-gray-400 mb-4">SEO AUDIT REPORT</div>
+            <h1 class="text-6xl font-black mb-4 break-all leading-tight">{{ analysis.url }}</h1>
+            <p class="text-xl text-gray-400">Generated on {{ date }}</p>
+        </div>
+
+        <div class="border-t border-white/20 pt-8 grid grid-cols-4 gap-8 items-end">
+            <div>
+                <p class="text-sm text-gray-400 mb-1">AUDIT FOCUS</p>
+                <p class="font-bold text-blue-400">{{ analysis.keyword|upper }}</p>
+            </div>
+            <div class="col-span-3 flex justify-end gap-10 text-right items-center">
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl font-bold text-blue-400">{{ analysis.seo_score }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-500">SEO Score</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl font-bold text-purple-400">{{ analysis.aeo_score }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-500">AEO Score</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl font-bold text-orange-400">{{ analysis.geo_score }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-500">GEO Score</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-3xl font-bold text-indigo-400">{{ analysis.neural_score }}</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest mt-1 text-gray-500">Neural IQ</p>
+                </div>
+                <div class="border-l border-white/20 pl-10">
+                    <p class="text-7xl font-black text-white">{{ analysis.overall_score }}</p>
+                    <p class="text-sm font-bold uppercase tracking-widest mt-2">Overall Score</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="p-16 min-h-screen">
+        <h2 class="text-4xl font-bold mb-12 border-b-4 border-black pb-4 inline-block">Executive Summary</h2>
+
+        <div class="grid grid-cols-2 gap-12 mb-16">
+            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">✅ Top Wins</h3>
+                <ul class="space-y-3">
+                    {% for strength in analysis.strengths %}
+                    <li class="flex items-start gap-3">
+                        <span class="text-green-500 font-bold">✓</span>
+                        <span class="text-gray-700">{{ strength }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="bg-red-50 p-8 rounded-2xl border border-red-100">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">⚠️ Critical Issues</h3>
+                <ul class="space-y-3">
+                    {% for weakness in analysis.weaknesses %}
+                    <li class="flex items-start gap-3">
+                        <span class="text-red-500 font-bold">!</span>
+                        <span class="text-gray-700">{{ weakness }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-6">Competitor Benchmark</h3>
+        <div class="mb-16">
+            <p class="text-gray-600 mb-4">We compared your site against the top 10 ranking competitors for <strong>"{{
+                    analysis.keyword }}"</strong>.</p>
+            <div class="bg-black text-white p-8 rounded-2xl">
+                <div class="grid grid-cols-3 gap-8 text-center">
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2">AVG. WORD COUNT</div>
+                        <div class="text-4xl font-bold">{{ analysis.competitor_avg_words }}</div>
+                        <div class="text-xs text-gray-500 mt-1">You: {{ analysis.word_count }}</div>
+                    </div>
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2">KEYWORD DENSITY</div>
+                        <div class="text-4xl font-bold">{{ analysis.competitor_density }}%</div>
+                        <div class="text-xs text-gray-500 mt-1">You: {{ analysis.keyword_density }}%</div>
+                    </div>
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2">DOMAIN AUTHORITY</div>
+                        <div class="text-4xl font-bold">High</div>
+                        <div class="text-xs text-gray-500 mt-1">Difficulty: Hard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AEO & GEO Analysis -->
+    <div class="p-16 min-h-screen page-break">
+        <h2 class="text-4xl font-bold mb-12 border-b-4 border-black pb-4 inline-block">Advanced Engine Analysis</h2>
+
+        <div class="grid grid-cols-2 gap-12 mb-16">
+            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-purple-600">
+                    <span class="text-2xl">⚡</span> AEO (Voice Search)
+                </h3>
+                <div class="space-y-6">
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">Featured Snippet Opportunity</span>
+                        <span class="font-bold">{{ "YES" if analysis.aeo_analysis.featured_snippet.opportunity else "NO"
+                            }}</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">PAA Coverage</span>
+                        <span class="font-bold">{{ analysis.aeo_analysis.paa_optimization.coverage_percentage|round|int
+                            }}%</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">FAQ Schema</span>
+                        <span class="font-bold">{{ "Detected" if analysis.aeo_analysis.faq_schema.has_faq_schema else
+                            "Missing" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-orange-600">
+                    <span class="text-2xl">🤖</span> GEO (AI Visibility)
+                </h3>
+                <div class="space-y-6">
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">E-E-A-T Score</span>
+                        <span class="font-bold">{{ analysis.geo_analysis.eeat_signals.score }}/100</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">Citation Worthiness</span>
+                        <span class="font-bold">{{ analysis.geo_analysis.citation_worthiness.score }}/100</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-gray-600">AI Formatting</span>
+                        <span class="font-bold">{{ analysis.geo_analysis.ai_formatting.score }}/100</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-6">Neuro-Semantic Logic Analysis</h3>
+        <div class="bg-gray-900 text-white p-8 rounded-2xl mb-12">
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-gray-400 uppercase text-xs">Search Intent Alignment</h4>
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-400">Status</span>
+                            <span
+                                class="font-bold {{ 'text-green-500' if analysis.semantic_analysis.intent_analysis.match else 'text-red-500' }}">
+                                {{ "LOGIC MATCH ✅" if analysis.semantic_analysis.intent_analysis.match else "LOGIC
+                                FAILURE ❌" }}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-1">User Wants: <span class="text-blue-400">{{
+                                analysis.semantic_analysis.intent_analysis.query_intent }}</span></p>
+                        <p class="text-sm text-gray-300">You Provided: <span class="text-white">{{
+                                analysis.semantic_analysis.intent_analysis.page_intent }}</span></p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-gray-400 uppercase text-xs">Missing Entities</h4>
+                    {% if analysis.semantic_analysis.entity_gaps %}
+                    <ul class="space-y-2">
+                        {% for gap in analysis.semantic_analysis.entity_gaps[:3] %}
+                        <li class="flex items-start gap-2 text-sm">
+                            <span class="text-red-500 font-bold">MISSING:</span>
+                            <span class="text-gray-300">{{ gap.entity }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="text-green-500 flex items-center gap-2">
+                        <span>✅</span> No logical gaps found.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-800 text-sm text-gray-400 italic">
+                "{{ analysis.semantic_analysis.recommendation }}"
+            </div>
+        </div>
+
+        <h3 class="text-2xl font-bold mb-6">AI Optimization Recommendations</h3>
+        <div class="bg-black text-white p-8 rounded-2xl mb-8">
+            <p class="font-mono text-sm leading-relaxed whitespace-pre-wrap">{{
+                analysis.ai_recommendations.optimized_title }}</p>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="p-16 min-h-screen page-break">
+        <h2 class="text-4xl font-bold mb-12 border-b-4 border-black pb-4 inline-block">Action Plan</h2>
+
+        <div class="space-y-8">
+            {% for item in analysis.recommendations %}
+            <div class="border border-gray-200 rounded-xl p-8 shadow-sm break-inside-avoid">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold">{{ item.title }}</h3>
+                    <span class="bg-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase">{{
+                        item.priority }} Priority</span>
+                </div>
+                <p class="text-gray-600 mb-6">{{ item.description }}</p>
+
+                <div
+                    class="bg-gray-50 p-6 rounded-lg border border-gray-200 font-mono text-sm leading-relaxed whitespace-pre-wrap">
+                    {{ item.code_snippet|default('No code snippet required.') }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-16 mt-auto text-center border-t border-gray-200">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="w-6 h-6 bg-black text-white flex items-center justify-center rounded text-xs">R</div>
+            <span class="font-bold">RankForge AI</span>
+        </div>
+        <p class="text-gray-400 text-sm">Generated automatically by RankForge AI. (c) 2026. All rights reserved.</p>
+    </div>
+
+</body>
+
+</html>
